@@ -1,13 +1,11 @@
 var connect     = require('connect'),
     express     = require('express'),
     app         = express.createServer(),
-    mongo		= require('mongoskin'),
 	faye        = require('faye'),
 	pubsub      = new faye.NodeAdapter({mount: '/faye', timeout: 45}),
-	mdb			= 'localhost:27017/cutie',
 	queue		= [],
 	messages	= {},
-	pingTime    = .5*60000, // 3 Minutes
+	pingTime    = .5*60000, // 30 seconds per message
 	interval 	= null;
 
 app.configure( function() {
