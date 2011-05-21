@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SHOUT Moderator</title>
+	</head>
+	<body>
+		<input type="button" id="start_button" value="start">
+		<input type="button" id="stop_button"  value="stop"><span id="status">Unknown</span>
+		<div id="queuebox">
+			<ul id="queue"><ul>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/faye/faye.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			var client = new Faye.Client('/faye');
+				subscription = client.subscribe('/cutie', function( message ){
+					switch( message.msg ) {
+						case 'incoming':
+							$('#queue').append('<li id="'+message.data._id+'">'+message.data.msg+'<input type="button" class="remove" value="Remove">');
+						break;
+						case 'update':
+							$('#queue #'+message.data).remove();
+						break;
+						case 'status':
+							$("#status").html(message.data);
+						break;
+					}
+				});
+				
+			subscription.callback( function() {
+				console.log('Connected');
+				client.publish('/cutie', {msg: 'getstatus'});
+			});
+			
+			$('#start_button').click(function(e){
+				client.publish( '/cutie', {msg: 'start'});
+				$('#status').html('Started');
+			});
+			
+			$('#stop_button').click(function(e){
+				client.publish( '/cutie', {msg: 'stop'});
+				$("#status").html('Stopped');
+			});
+			
+			$('.remove').live('click', function(e){
+				var p = $(this).parent('li');
+				client.publish('/cutie', {msg: 'remove', data: $(p).attr('id')});
+			});
+		</script>
+</body>
+</html>

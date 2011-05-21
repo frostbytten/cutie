@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SHOUT Display</title>
+		<link rel="stylesheet" href="/css/display.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="billboard"></div>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/faye/faye.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			var client = new Faye.Client('/faye');
+				subscription = client.subscribe('/cutie', function( message ){
+					console.log(message);
+					switch( message.msg ) {
+						case 'display':
+							console.log('Got display message');
+							$('#billboard').fadeOut('fast', function(){
+								$(this).html( message.data );
+								$(this).fadeIn('slow', function(){});
+							});
+						break;
+						case 'cls':
+							$('#billboard').fadeOut('slow', function(){});
+						break;
+					}
+				});
+				
+				subscription.callback( function() {
+					console.log('Connected');
+				});
+				</script>
+	</body>
+</html>	
