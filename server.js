@@ -35,12 +35,12 @@ app.get('/parse', function( req, res ) {
 	var uid = connect.utils.uid(7);
 	console.log( req.query );
 	if( typeof req.query.msg === 'undefined' ) {
-		res.render('sms.ejs', {message:'You must send me something to display. Send SHOUT <message> to 41411'});
+		res.end();
 	} else {
 		queue.push(uid);
 		messages[uid] = req.query.msg;
 		pubsub.getClient().publish('/cutie', {msg: 'incoming', data: {_id: uid, msg: req.query.msg}});
-		res.render('sms.ejs', {message:'Your message will be displayed soon. Thank you!'});
+		res.end();
 	}
 });
 
