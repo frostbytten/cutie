@@ -4,7 +4,7 @@ body {
 	font-weight: bold;
 	font-style: italic;
 	color: #DDD;
-	font-size: 22pt;
+	font-size: 32pt;
 	height: 480px;
 	margin: 0;
 	padding: 0;
@@ -12,8 +12,8 @@ body {
 
 #wrapper {
 	background-image: url("/images/background.jpg");
-	height: 480px;
-	width: 740px;
+	height: 768px;
+	width: 1024px;
 	display: block;
 	position: relative;
 }
@@ -21,7 +21,7 @@ body {
 #billboard {
 	text-align: center;
 	position: absolute;
-	top: 280px;
-	left: 30px;
-	width: 680px;
+	top: 400px;
+	left: 62px;
+	width: 900px;
 }
