@@ -23,17 +23,18 @@ app.get('/display', function( req, res ){
 	res.render('display.ejs');
 });
 
-app.get('/start', function ( req, res ) {
-	res.render('start.ejs');
-});
 
 app.get('/moderate', function( req, res ) {
 	res.render('moderate.ejs');
 });
 
+app.get('/qa', function( req, res ) {
+  res.render('qamode.ejs');
+});
+
 app.get('/parse', function( req, res ) {
 	var uid = connect.utils.uid(7);
-	console.log( req.query );
+	//console.log( req.query );
 	if( typeof req.query.msg === 'undefined' ) {
 		res.end();
 	} else {
@@ -76,6 +77,12 @@ client = pubsub.getClient().subscribe('/cutie', function( message ) {
 			}, pingTime);
 			console.log(interval);
 		break;
+		case 'displayqa':
+		  if( queue.length > 0 && queue.indexOf(message.data) !== -1 ) {
+  		  pubsub.getClient().publish('/cutie', {msg: 'update', data: [message.data,messages[message.data]]});
+  		  pubsub.getClient().publish('/cutie', {msg: 'display', data: messages[message.data]});
+		  }
+		break;
 		case 'stop':
 			console.log( interval );
 			clearInterval( interval );
@@ -83,13 +90,16 @@ client = pubsub.getClient().subscribe('/cutie', function( message ) {
 			console.log(interval)
 			
 		break;
+		case 'stopqa':
+		  pubsub.getClient().publish('/cutie', {msg: 'cls'});
+		 break;
 		case 'remove':
 			console.log(message.data);
 			if(queue.indexOf(message.data) !== -1) {
 				queue.splice(queue.indexOf(message.data),1);
 				delete messages[message.data];
 			}
-			pubsub.getClient().publish('/cutie', {msg: 'update', data: message.data});
+			pubsub.getClient().publish('/cutie', {msg: 'update', data: [message.data]});
 		break;
 	}
 });

@@ -16,7 +16,7 @@
 					console.log(message);
 					switch( message.msg ) {
 						case 'display':
-							console.log('Got display message');
+							//console.log('Got display message');
 							$('#billboard').fadeOut('fast', function(){
 								$(this).html( message.data );
 								$(this).fadeIn('slow', function(){});

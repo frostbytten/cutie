@@ -4,8 +4,7 @@
 		<title>SHOUT Moderator</title>
 	</head>
 	<body>
-		<input type="button" id="start_button" value="start">
-		<input type="button" id="stop_button"  value="stop"><span id="status">Unknown</span>
+		<input type="button" id="stop_button"  value="Clear"><span id="status">Displaying:</span>
 		<div id="queuebox">
 			<ul id="queue"><ul>
 		</div>
@@ -16,35 +15,34 @@
 				subscription = client.subscribe('/cutie', function( message ){
 					switch( message.msg ) {
 						case 'incoming':
-							$('#queue').append('<li id="'+message.data._id+'">'+message.data.msg+'<input type="button" class="remove" value="Remove">');
+							$('#queue').append('<li id="'+message.data._id+'"><input type="button" class="display" value="Display Question">'+message.data.msg+'<input type="button" class="remove" value="Remove">');
 						break;
 						case 'update':
-							$('#queue #'+message.data[0]).remove();
-						break;
-						case 'status':
-							$("#status").html(message.data);
+						  _id = message.data[0];
+						  _msg = message.data[1];
+							$('#queue #'+_id).remove();
+							if(typeof _msg !== 'undefined' ) $("#status").html('Displaying: '+_msg);
 						break;
 					}
 				});
 				
 			subscription.callback( function() {
 				console.log('Connected');
-				client.publish('/cutie', {msg: 'getstatus'});
-			});
-			
-			$('#start_button').click(function(e){
-				client.publish( '/cutie', {msg: 'start'});
-				$('#status').html('Started');
 			});
 			
 			$('#stop_button').click(function(e){
-				client.publish( '/cutie', {msg: 'stop'});
-				$("#status").html('Stopped');
+				client.publish( '/cutie', {msg: 'stopqa'});
+				$("#status").html('Displaying:');
 			});
 			
 			$('.remove').live('click', function(e){
 				var p = $(this).parent('li');
 				client.publish('/cutie', {msg: 'remove', data: $(p).attr('id')});
+			});
+			
+			$('.display').live('click', function(e){
+  			var p = $(this).parent('li');
+  			client.publish('/cutie', {msg: 'displayqa', data: $(p).attr('id')});
 			});
 		</script>
 </body>
