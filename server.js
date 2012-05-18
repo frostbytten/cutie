@@ -86,6 +86,7 @@ client = pubsub.getClient().subscribe('/cutie', function( message ) {
 		case 'stop':
 			console.log( interval );
 			clearInterval( interval );
+            interval = null;
 			pubsub.getClient().publish('/cutie', {msg: 'cls'});
 			console.log(interval)
 			

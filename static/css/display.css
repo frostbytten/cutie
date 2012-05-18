@@ -3,18 +3,19 @@ body {
 	font-family: 'Georgia';
 	font-weight: bold;
 	font-style: italic;
-	color: #DDD;
-	font-size: 32pt;
+	color: #FFF;
+	font-size: 48pt;
 	height: 480px;
 	margin: 0;
 	padding: 0;
+    text-shadow: black 0.1em 0.1em 0.2em
 }
 
 #wrapper {
-  background-color: #0F0;
-	/* background-image: url("/images/background.jpg"); */
-	height: 768px;
-	width: 1024px;
+    /* background-color: #0F0; */
+	background-image: url("/images/background.jpg");
+	height: 1080px;
+	width: 1920px;
 	display: block;
 	position: relative;
 }
@@ -22,7 +23,7 @@ body {
 #billboard {
 	text-align: center;
 	position: absolute;
-	top: 200px;
-	left: 62px;
-	width: 900px;
+	top: 500px;
+	left: 160px;
+	width: 1600px;
 }

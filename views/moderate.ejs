@@ -19,7 +19,7 @@
 							$('#queue').append('<li id="'+message.data._id+'">'+message.data.msg+'<input type="button" class="remove" value="Remove">');
 						break;
 						case 'update':
-							$('#queue #'+message.data[0]).remove();
+							$('#queue #'+message.data).remove();
 						break;
 						case 'status':
 							$("#status").html(message.data);
